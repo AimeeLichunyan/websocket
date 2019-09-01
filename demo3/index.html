@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>websocket</title>
+</head>
+<body>
+    <h1>echo test</h1>
+    <input id="sendTxt" type="text">
+    <button id="sendBtn">发送</button>
+    <div id="recv"></div>
+    <script type="text/javascript">
+        var websocket = new WebSocket("ws://localhost:3000/");
+        function showMessage(str) {
+            var div = document.createElement('div');
+            div.innerHTML = str;
+            document.body.appendChild(div);
+        }
+        websocket.onopen =  function() {
+            console.log('websocket open');
+            document.getElementById('recv').innerHTML = "connected";
+            document.getElementById('sendBtn').onclick = function() {
+                var text = document.getElementById('sendTxt').value;
+                if(text) {
+                    websocket.send(text);
+                }
+            }
+        }
+        websocket.onclose = function() {
+            console.log('websocket close');
+        }
+        websocket.onmessage = function(e) {
+            console.log(e);
+            document.getElementById('recv').innerHTML = e.data;
+        }
+        // document.getElementById('sendBtn').onclick = function() {
+        //    var text = document.getElementById('sendTxt').value;
+        //    websocket.send(text);
+        // }
+        
+    </script>
+</body>
+</html>
